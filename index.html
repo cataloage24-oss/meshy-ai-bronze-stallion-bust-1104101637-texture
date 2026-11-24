@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meshy AI Bronze Stallion Bust 1104101637 texture</title>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: #16181d;
+      color: #e6e8ef;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
+    }
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      background-color: #16181d;
+      --poster-color: #16181d;
+    }
+    .loader-box {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(300px, 80vw);
+      background: rgba(30, 34, 42, 0.88);
+      backdrop-filter: blur(10px);
+      border: 1px solid #2d3340;
+      padding: 14px 16px;
+      border-radius: 14px;
+      text-align: center;
+      font-size: 12px;
+      z-index: 30;
+    }
+    .loader-box.hide { display: none; }
+    .track {
+      width: 100%;
+      height: 6px;
+      background: #2d3340;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .fill {
+      height: 100%;
+      width: 0%;
+      background: #4da3ff;
+      transition: width 0.15s ease;
+    }
+
+    /* Retractable Visitor Control Panel */
+    .hud-toggle {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      z-index: 25;
+      background: rgba(30, 34, 42, 0.88);
+      backdrop-filter: blur(10px);
+      border: 1px solid #2d3340;
+      color: #e6e8ef;
+      padding: 9px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .hud-toggle:hover { border-color: #4da3ff; }
+
+    .hud-panel {
+      position: fixed;
+      bottom: 62px;
+      right: 16px;
+      width: min(310px, calc(100vw - 32px));
+      background: rgba(30, 34, 42, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid #2d3340;
+      border-radius: 16px;
+      padding: 14px;
+      z-index: 24;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .hud-panel.collapsed {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+    }
+    .hud-row {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .hud-label {
+      display: flex;
+      justify-content: space-between;
+      color: #cbd5e1;
+      font-size: 11px;
+    }
+    .hud-panel input[type="range"] {
+      width: 100%;
+      accent-color: #4da3ff;
+      cursor: pointer;
+    }
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .hud-btn {
+      background: #252a34;
+      color: #e2e8f0;
+      border: 1px solid #2d3340;
+      padding: 6px 8px;
+      border-radius: 8px;
+      font-size: 11px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .hud-btn:hover, .hud-btn.active {
+      border-color: #4da3ff;
+      color: #4da3ff;
+    }
+  </style>
+</head>
+<body>
+  <model-viewer
+    id="mv"
+    src="./Meshy_AI_Bronze_Stallion_Bust_1104101637_texture.glb"
+    poster="./poster.webp"
+    alt="Meshy AI Bronze Stallion Bust 1104101637 texture"
+    camera-controls
+    auto-rotate
+    touch-action="pan-y"
+    shadow-intensity="1"
+    shadow-softness="1"
+    exposure="1"
+    environment-image="neutral"
+    environment-rotation="0deg"
+    loading="eager">
+    <div class="loader-box" slot="progress-bar" id="loaderBox">
+      <div id="loaderTxt">Se încarcă modelul 3D... 0%</div>
+      <div class="track"><div class="fill" id="loaderFill"></div></div>
+    </div>
+  </model-viewer>
+
+  <button class="hud-toggle" id="hudToggle" type="button">⚙ Controale 3D</button>
+
+  <div class="hud-panel collapsed" id="hudPanel">
+    <div class="hud-row">
+      <div class="hud-label"><span>Expunere</span><span id="expVal">1.00</span></div>
+      <input id="expRange" type="range" min="0.2" max="2.5" step="0.05" value="1" />
+    </div>
+    <div class="hud-row">
+      <div class="hud-label"><span>Rotație Lumină</span><span id="rotVal">0deg</span></div>
+      <input id="rotRange" type="range" min="0" max="360" step="5" value="0" />
+    </div>
+    <div class="hud-row">
+      <span class="hud-label">Unghi Cameră</span>
+      <div class="btn-grid">
+        <button class="hud-btn" type="button" data-cam="45deg 65deg auto">3/4</button>
+        <button class="hud-btn" type="button" data-cam="0deg 85deg auto">Față</button>
+        <button class="hud-btn" type="button" data-cam="90deg 85deg auto">Lateral</button>
+        <button class="hud-btn" type="button" data-cam="0deg 5deg auto">Sus</button>
+        <button class="hud-btn" type="button" id="wfBtn">Wireframe</button>
+        <button class="hud-btn" type="button" id="rstBtn">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const mv = document.getElementById('mv');
+    const loaderBox = document.getElementById('loaderBox');
+    const loaderFill = document.getElementById('loaderFill');
+    const loaderTxt = document.getElementById('loaderTxt');
+    const hudToggle = document.getElementById('hudToggle');
+    const hudPanel = document.getElementById('hudPanel');
+
+    
+
+    mv.addEventListener('progress', (e) => {
+      const pct = Math.round(e.detail.totalProgress * 100);
+      loaderFill.style.width = pct + '%';
+      loaderTxt.textContent = 'Se încarcă modelul 3D... ' + pct + '%';
+      if (pct >= 100) setTimeout(() => loaderBox.classList.add('hide'), 250);
+    });
+
+    hudToggle.addEventListener('click', () => {
+      hudPanel.classList.toggle('collapsed');
+    });
+
+    const expRange = document.getElementById('expRange');
+    const expVal = document.getElementById('expVal');
+    expRange.addEventListener('input', () => {
+      mv.exposure = expRange.value;
+      expVal.textContent = Number(expRange.value).toFixed(2);
+    });
+
+    const rotRange = document.getElementById('rotRange');
+    const rotVal = document.getElementById('rotVal');
+    rotRange.addEventListener('input', () => {
+      mv.setAttribute('environment-rotation', rotRange.value + 'deg');
+      rotVal.textContent = rotRange.value + 'deg';
+    });
+
+    document.querySelectorAll('[data-cam]').forEach((b) => {
+      b.addEventListener('click', () => {
+        mv.cameraOrbit = b.dataset.cam;
+        mv.fieldOfView = 'auto';
+      });
+    });
+
+    document.getElementById('rstBtn').addEventListener('click', () => {
+      mv.cameraOrbit = 'auto auto auto';
+      mv.fieldOfView = 'auto';
+    });
+
+    let wf = false;
+    const wfBtn = document.getElementById('wfBtn');
+    wfBtn.addEventListener('click', () => {
+      wf = !wf;
+      wfBtn.classList.toggle('active', wf);
+      const syms = Object.getOwnPropertySymbols(mv);
+      const sSym = syms.find((s) => s.description === 'scene');
+      if (sSym && mv[sSym]) {
+        mv[sSym].traverse((n) => {
+          if (n.isMesh && n.material) {
+            const mats = Array.isArray(n.material) ? n.material : [n.material];
+            mats.forEach((m) => { m.wireframe = wf; m.needsUpdate = true; });
+          }
+        });
+        if (mv[sSym].queueRender) mv[sSym].queueRender();
+      }
+    });
+  </script>
+</body>
+</html>
